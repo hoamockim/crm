@@ -1,0 +1,9 @@
+services: 
+  - code: USMS
+    name: User management system
+  - code: INVEN
+    name: Invetory system
+errors:
+  - code: SRV001
+    message: Service time out
+
