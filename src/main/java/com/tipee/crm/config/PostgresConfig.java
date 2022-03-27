@@ -32,10 +32,10 @@ public class PostgresConfig extends AbstractR2dbcConfiguration {
     @Override
     public PostgresqlConnectionFactory connectionFactory() {
         return new PostgresqlConnectionFactory(PostgresqlConnectionConfiguration.builder()
-                .host(hostName)
-                .database(database)
-                .port(port)
-                .username(username)
-                .password(password).build());
+            .host(hostName)
+            .database(database)
+            .port(port)
+            .username(username)
+            .password(password).build());
     }
 }

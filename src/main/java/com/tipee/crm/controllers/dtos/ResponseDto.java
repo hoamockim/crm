@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Data;
 import lombok.Getter;
+import reactor.core.publisher.Mono;
 
 public class ResponseDto<T> {
     @Data
@@ -61,5 +62,15 @@ public class ResponseDto<T> {
         Meta meta = new Meta(200, "", "ok");
         res.setMeta(meta);
         return res;
+    }
+
+    public static <T> Mono<ResponseDto> getMonoInstance(Mono<T> resData) {
+       return resData.map((data) -> {
+            ResponseDto res = new ResponseDto<>();
+            Meta meta = new Meta(200, "", "ok");
+            res.setMeta(meta);
+            res.setData(data);
+            return res;
+        });
     }
 }

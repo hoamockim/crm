@@ -9,7 +9,6 @@ import org.springframework.core.io.support.EncodedResource;
 import org.springframework.core.io.support.PropertySourceFactory;
 import org.springframework.core.env.PropertiesPropertySource;
 
-
 public class YamlPropertySourceFactory implements PropertySourceFactory {
 
     @Override
@@ -20,5 +19,4 @@ public class YamlPropertySourceFactory implements PropertySourceFactory {
 
         return new PropertiesPropertySource(resource.getResource().getFilename(), properties);
     }
-    
 }
