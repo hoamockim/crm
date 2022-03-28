@@ -8,7 +8,7 @@ import org.springframework.data.r2dbc.config.AbstractR2dbcConfiguration;
 import org.springframework.data.r2dbc.repository.config.EnableR2dbcRepositories;
 
 @Configuration
-@EnableR2dbcRepositories(basePackages = {"com.tipee.crm.repository"})
+@EnableR2dbcRepositories(basePackages = {"com.tipee.crm.services"})
 public class PostgresConfig extends AbstractR2dbcConfiguration {
     @Value("${DATABASE_HOST}")
     String hostName;
