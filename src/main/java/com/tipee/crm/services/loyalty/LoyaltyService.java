@@ -2,6 +2,8 @@ package com.tipee.crm.services.loyalty;
 
 import java.util.List;
 
+import com.tipee.crm.util.StringUtil;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,14 +20,23 @@ public class LoyaltyService {
         return repository.getByCode(code);
     }
 
+    public Mono<Loyalty> getById(Long id) {
+        return repository.findById(id)
+        .switchIfEmpty(Mono.error(new LoyaltyException(id)));
+    }
+
     public Flux<Loyalty> fetchLoaylties(List<String> codes){
         return repository.findAll();
     }
 
-    public Mono<Loyalty> create(String code, String description) {
+    public Mono<Loyalty> create(String description, Integer point, LoyaltyType loyaltyType) {
         Loyalty loyalty = new Loyalty();
-        loyalty.setCode(code);
+        loyalty.setCode(StringUtil.random(30));
         loyalty.setDescription(description);
+        loyalty.setPoint(point);
+        loyalty.setType(loyaltyType);
+       // loyalty.setCreatedOn(new Date());
+       // loyalty.setUpdatedOn(new Date());
         return repository.save(loyalty);
     }
 

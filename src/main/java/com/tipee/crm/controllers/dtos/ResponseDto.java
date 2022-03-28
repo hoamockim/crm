@@ -1,5 +1,7 @@
 package com.tipee.crm.controllers.dtos;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Data;
@@ -9,27 +11,25 @@ import reactor.core.publisher.Mono;
 public class ResponseDto<T> {
     @Data
     public static class Meta {
-        public Meta(int code, String serviceCode, String message) {
-            this.code = code;
+        public Meta( String serviceCode, String message) {
             this.serviceCode = serviceCode;
             this.message = message;
         }
 
-        private int status;
-
         @JsonProperty("request_id")
+        @JsonInclude(Include.NON_NULL)
         private String requestId;
 
         @JsonProperty("service_code")
+        @JsonInclude(Include.NON_NULL)
         private String serviceCode;
 
         @JsonProperty
+        @JsonInclude(Include.NON_NULL)
         private String message;
 
-        @JsonProperty
-        private int code;
-
         @JsonProperty("errors")
+        @JsonInclude(Include.NON_NULL)
         Object errors;
     }
 
@@ -39,6 +39,7 @@ public class ResponseDto<T> {
 
     @Getter
     @JsonProperty("data")
+    @JsonInclude(Include.NON_NULL)
     private T data;
 
     private void setMeta(Meta meta){
@@ -51,7 +52,7 @@ public class ResponseDto<T> {
 
     public static ResponseDto getInstance(Object responseData) {
         ResponseDto res = new ResponseDto<>();
-        Meta meta = new Meta(200, "", "Ok");
+        Meta meta = new Meta(null, "Ok");
         res.setMeta(meta);
         res.setData(responseData);
         return res;
@@ -59,7 +60,7 @@ public class ResponseDto<T> {
 
     public static ResponseDto heathCheckSuccess() {
         ResponseDto res = new ResponseDto<>();
-        Meta meta = new Meta(200, "", "ok");
+        Meta meta = new Meta(null, "Ok");
         res.setMeta(meta);
         return res;
     }
@@ -67,10 +68,18 @@ public class ResponseDto<T> {
     public static <T> Mono<ResponseDto> getMonoInstance(Mono<T> resData) {
        return resData.map((data) -> {
             ResponseDto res = new ResponseDto<>();
-            Meta meta = new Meta(200, "", "ok");
+            Meta meta = new Meta(null, "Ok");
             res.setMeta(meta);
             res.setData(data);
             return res;
         });
+    }
+
+    public static <T> Mono<ResponseDto> getMonnoInstanceFromData(T data, String serviceCode, String message) {
+        ResponseDto res = new ResponseDto<>();
+        Meta meta = new Meta( serviceCode, message);
+        res.setMeta(meta);
+        res.setData(data);
+        return Mono.just(res);
     }
 }
