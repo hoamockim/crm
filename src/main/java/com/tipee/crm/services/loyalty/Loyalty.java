@@ -38,13 +38,11 @@ public class Loyalty implements Serializable {
     @Column()
     String description;
 
-    /**
-     *     @Column("created_on")
     @JsonIgnore
-    private Date createdOn;
+    @Column("created_on")
+    private Long createdOn;
 
     @JsonIgnore
     @Column("updated_on")
-    private Date updatedOn;
-     */
+    private Long updatedOn;
 }
