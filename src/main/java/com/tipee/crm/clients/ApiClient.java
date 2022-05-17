@@ -17,5 +17,23 @@ public class ApiClient {
             .retrieve()
             .bodyToMono(ClientResponse.class);
     }
+
+    public Mono<ClientResponse> post(String domain, String uri, ClientRequest body) {
+        return WebClient.create(domain).post()
+            .uri(uri)
+            .accept(MediaType.APPLICATION_JSON)
+            .bodyValue(body)
+            .retrieve()
+            .bodyToMono(ClientResponse.class);
+    }
+
+    public Mono<ClientResponse> patch(String domain, String uri, ClientRequest body) {
+        return WebClient.create(domain).patch()
+            .uri(uri)
+            .accept(MediaType.APPLICATION_JSON)
+            .bodyValue(body)
+            .retrieve()
+            .bodyToMono(ClientResponse.class);
+    }
 }
     
