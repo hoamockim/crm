@@ -19,24 +19,23 @@ import reactor.core.publisher.Mono;
 @RequestMapping(Route.app + "loyalty")
 public class LoyatyController {
 
-    @Autowired
-    LoyaltyService loyaltyService;
-    
-    @GetMapping("{id}")
-    public Mono<ResponseDto> getById(@PathVariable(name = "id") Long id){
-      //return ResponseDto.getMonoInstance(loyaltyService.getById(id));
-      return loyaltyService.getById(id)
-      .flatMap(l ->  ResponseDto.getMonnoInstanceFromData(l, "loyalty", "Ok"))
-      .onErrorResume(e ->  ResponseDto.getMonnoInstanceFromData(null, "loyalty", e.getMessage()));
-    }
+  @Autowired
+  LoyaltyService loyaltyService;
+  
+  @GetMapping("{id}")
+  public Mono<ResponseDto> getById(@PathVariable(name = "id") Long id){
+    return loyaltyService.getById(id)
+    .flatMap(l ->  ResponseDto.getMonnoInstanceFromData(l, "loyalty", "Ok"))
+    .onErrorResume(e ->  ResponseDto.getMonnoInstanceFromData(null, "loyalty", e.getMessage()));
+  }
 
-    @PostMapping()
-    public Mono<ResponseDto> create(@RequestBody LoyaltyReq bodyReq){
-    return loyaltyService.create(
-                bodyReq.getDescription(), 
-                bodyReq.getPoint(),  
-                bodyReq.getType())
-            .flatMap(l -> ResponseDto.getMonnoInstanceFromData(l, "loyalty", "Ok"))
-            .onErrorResume(e ->  ResponseDto.getMonnoInstanceFromData(null, "loyalty", e.getMessage()));
-    }
+  @PostMapping()
+  public Mono<ResponseDto> create(@RequestBody LoyaltyReq bodyReq){
+    return loyaltyService.save(
+      bodyReq.getDescription(), 
+      bodyReq.getPoint(),  
+      bodyReq.getType())
+    .flatMap(l -> ResponseDto.getMonnoInstanceFromData(l, "loyalty", "Ok"))
+    .onErrorResume(e ->  ResponseDto.getMonnoInstanceFromData(null, "loyalty", e.getMessage()));
+  }
 }

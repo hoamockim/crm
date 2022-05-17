@@ -1,5 +1,6 @@
 package com.tipee.crm.services.loyalty;
 
+import java.util.Date;
 import java.util.List;
 
 import com.tipee.crm.util.StringUtil;
@@ -29,15 +30,19 @@ public class LoyaltyService {
         return repository.findAll();
     }
 
-    public Mono<Loyalty> create(String description, Integer point, LoyaltyType loyaltyType) {
+    public Mono<Loyalty> save(String description, Integer point, LoyaltyType loyaltyType) {
+        return repository.save(this.create(description, point, loyaltyType));
+    }
+
+    private Loyalty create(String description, Integer point, LoyaltyType loyaltyType) {
         Loyalty loyalty = new Loyalty();
         loyalty.setCode(StringUtil.random(30));
         loyalty.setDescription(description);
         loyalty.setPoint(point);
         loyalty.setType(loyaltyType);
-       // loyalty.setCreatedOn(new Date());
-       // loyalty.setUpdatedOn(new Date());
-        return repository.save(loyalty);
+        loyalty.setCreatedOn(StringUtil.convertDateToSeconds(new Date()));
+        loyalty.setUpdatedOn(StringUtil.convertDateToSeconds(new Date()));
+        return loyalty;
     }
 
     public Mono<Loyalty> update(String code, String description) {
